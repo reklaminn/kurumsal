@@ -1,0 +1,728 @@
+﻿<!--#Include file="../functions/dbbilgi.asp"-->
+<!--#Include file="../functions/function.asp"-->
+<!--#Include file="../functions/aspJSON1.17.asp"-->
+<%
+    
+imgtempyol=".."&imgtemp
+dbyolurun="../images/siiroyku/"
+dbyolref="../images/referans/"
+dbupload="../images/haber/"
+dbuploadyazar="../images/yazar/"
+dbuploadyazi="../images/yazi/"
+dbuploadreklam="../images/reklam/"
+dbuploadbaslik="../images/baslik/"
+dbuploadgaleri=".."&imggaleriyol
+
+
+domaini=replace(Request.ServerVariables("Server_Name"),".","")
+    
+Set Con1 = Server.CreateObject("ADODB.Connection")
+Set yonetAdmin = Server.CreateObject("Adodb.Recordset")
+Set yonetAdmin1 = Server.CreateObject("Adodb.Recordset")
+Set yonetAdmin2 = Server.CreateObject("Adodb.Recordset")
+Con1.Open verimerkezi1
+
+set mmmGenel = Con.Execute ("select * from diller1 where alt = '1' and sira1 = '1'")
+if mmmGenel.eof then
+aktifdil=240
+ceviridilek="tr"
+else
+aktifdil=mmmGenel("id")
+ceviridilek=mmmGenel("ceviricode")
+    if aktifdil=request.cookies("remember_admin_dil") then
+    else
+    response.cookies("remember_admin_dil")=""
+response.cookies("remember_admin_dil").Expires=date+10 
+response.cookies("remember_admin_dil")=aktifdil
+    end if
+end if
+close(mmmGenel)
+
+        
+set mmmGenel = Con.Execute ("select * from diller1 where id = '"&request.cookies("remember_admin_dil")&"'")
+if mmmGenel.eof then
+aktifdil=240
+ceviridil="tr-en"
+else
+ceviridileki=mmmGenel("ceviricode")
+ceviridil=ceviridilek&"-"&ceviridileki
+end if
+close(mmmGenel)
+    
+'silinmiyecekler="s835,s1013,s1011,s979,f91,f90,c155,c156,c157,c158,c159,c160,c161,c162,c163,c164,c165,c166,c167,c170,c172,c174,c175,c182,c183,c184,c90,s1080,s1053,s1055,s1076,s1048,s1105,s1121"
+%>
+<%
+ set mmmGenel = Con.Execute ("select * from tasarim where aktif = '1'")
+ menusiraadet=mmmGenel("d1")
+d2=mmmGenel("d2")
+d4=mmmGenel("d4")
+d6=mmmGenel("d6")
+d8=mmmGenel("d8")
+d42=mmmGenel("d42")
+d43=mmmGenel("d43")
+d19=mmmGenel("d19")
+d20=mmmGenel("d20")
+d21=mmmGenel("d21")
+d22=mmmGenel("d22")
+d23=mmmGenel("d23")
+d24=mmmGenel("d24")
+d54=mmmGenel("d54")
+d55=mmmGenel("d55")
+d57=mmmGenel("d57")
+sitedb=mmmGenel("icq")
+temppath=mmmGenel("id")&"/"
+close(mmmGenel)
+
+%>
+<%
+Response.ContentType = "text/html" 
+Response.Charset = "UTF-8" 
+Response.Codepage = 65001 
+Response.Buffer=True
+%>
+<%sub footer(fcgoster)%>
+<%if request.QueryString("islemexcel")="" then %>
+<%if fcgoster="1" then%>
+
+                  
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+             &copy; Copyright <%=year(date)%>  All Rights Reserved <a href="<%=webadmin%>" title="<%=webadmin%>" target="_blank"><%=webadmin%></a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+        <%else
+		end if%>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="<%=cloudpath%>admin/vendors/bootstrap.min.js"></script>
+      <script type="text/javascript" src="<%=cloudpath%>themes/default/js/jquery.uploadPreview.min.js"></script>
+<script type="text/javascript" src="<%=cloudpath%>admin/js/jquery-sortable1.js"></script> 
+    <!-- Bootstrap Submenu -->
+    <script src="<%=cloudpath%>admin/vendors/bootstrap-submenu.js"></script>
+    <!-- FastClick -->
+    <script src="<%=cloudpath%>admin/vendors/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="<%=cloudpath%>admin/vendors/nprogress.js"></script>
+    
+    <!-- Dropzone.js -->
+    <script src="<%=cloudpath%>admin/vendors/dropzone.min.js"></script>
+    <!-- Chart.js -->
+    <script src="<%=cloudpath%>admin/vendors/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="<%=cloudpath%>admin/vendors/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="<%=cloudpath%>admin/vendors/bootstrap-progressbar.min.js"></script>
+    
+    <!-- Skycons -->
+    <script src="<%=cloudpath%>admin/vendors/skycons.js"></script>
+    <!-- Flot -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.pie.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.time.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.stack.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.orderBars.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.spline.min.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="<%=cloudpath%>admin/vendors/date.js"></script>
+    <!-- JQVMap -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.vmap.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/maps/jquery.vmap.world.js"></script>
+    <!-- easy-pie-chart -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.easypiechart.min.js"></script>
+    <!-- iCheck -->
+    <script src="<%=cloudpath%>admin/vendors/icheck.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="<%=cloudpath%>admin/vendors/moment.min.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/daterangepicker.js"></script>
+
+<!-- bootstrap-wysiwyg -->
+    <script src="<%=cloudpath%>admin/vendors/bootstrap-wysiwyg.min.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.hotkeys.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/prettify.js"></script>
+    <!-- jQuery Tags Input -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.tagsinput.js"></script>
+    <!-- Switchery -->
+    <script src="<%=cloudpath%>admin/vendors/switchery.min.js"></script>
+    <!-- Select2 -->
+    <script src="<%=cloudpath%>admin/vendors/select2.full.min.js"></script>
+    <!-- Parsley -->
+    <script src="<%=cloudpath%>admin/vendors/parsley.min.js"></script>
+    <!-- Autosize -->
+    <script src="<%=cloudpath%>admin/vendors/autosize.min.js"></script>
+    <!-- jQuery autocomplete -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.autocomplete.min.js"></script>
+    <!-- jquery.inputmask -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.inputmask.bundle.min.js"></script>
+    <!-- starrr -->
+    <script src="<%=cloudpath%>admin/vendors/starrr.js"></script>
+        <script src="<%=cloudpath%>admin/vendors/pnotify.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/pnotify.buttons.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/pnotify.nonblock.js"></script>
+<script type="text/javascript" src="<%=cloudpath%>admin/js/jquery.editable-select.js"></script>
+<script type="text/javascript" src="<%=cloudpath%>admin/js/selectize.min.js"></script>
+
+    <script type="text/javascript" src="<%=cloudpath%>admin/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="<%=cloudpath%>admin/js/bootstrap-datepicker.min.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="<%=cloudpath%>admin/js/custom.min.js"></script>
+    <!-- Modal with remote path -->
+			<div id="baslikmodal" class="modal fade" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Kapat"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel2">Yükleniyor</h4>
+                        </div>
+
+						<div class="modal-body with-padding">
+							
+						</div>
+
+						<div class="modal-footer">
+							<button class="btn btn-warning" data-dismiss="modal">Close</button>
+							<button class="btn btn-primary">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /modal with remote path -->
+            <script>
+ $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+      });
+      
+</script>
+
+<style>
+    #myModal .modal-dialog, #rfm_modal .modal-dialog {
+  width: 95%;
+  height: 95%;
+  margin: 1% auto;
+  padding: 0;
+}
+
+ #myModal .modal-content, #rfm_modal .modal-content {
+  height: auto;
+  min-height: 100%;
+  border-radius: 0;
+}
+ #myModal .modal-content iframe, #rfm_modal .modal-content iframe{
+  height: auto;
+  min-height: 87vh;
+}
+</style>
+<%
+	if session("hatam1")="" then
+	else
+	if session("hatam1")="green" then
+	csses="success"
+	elseif session("hatam1")="red" then
+	csses="error"
+	elseif session("hatam1")="orange" then
+	csses="warning"
+	else
+	end if
+	%>
+<script type="text/javascript">
+$(document).ready(function() {
+new PNotify({
+                                  title: '<%=session("hata1")%>',
+                                  type: '<%=csses%>',
+                                  styling: 'bootstrap3'
+                              });
+							  });
+							   
+   </script>
+<%
+Response.Buffer = True
+if session("hatamm1")="2" then
+session("hatam1")=""
+	else
+	session("hatamm1")=1
+	session("hatamm1")=session("hatamm1")+1
+	'if instr(Request.ServerVariables("HTTP_REFERER"),"&islem=")=0 then
+	'referrer=Request.ServerVariables("HTTP_REFERER")
+	'else
+	'referrer=split(Request.ServerVariables("HTTP_REFERER"),"&islem=")(0)
+	'end if
+		'response.Write(referrer)
+	'response.Redirect referrer
+	end if
+end if
+ %>
+<script src="<%=cloudpath %>8.3/vendor/jquery.cookie/jquery.cookie.min.js"></script>
+    <script type="text/javascript" src="<%=cdntinyfldr %>admin/tinymce/tinymce.min.js"></script>
+	<script type="text/javascript" src="<%=cdntinyfldr %>admin/tinymce/tiny_str.js"></script>	
+
+    
+<!-- Oturum Yenileme Modali -->
+<div id="sessionModal" style="display: none; z-index: 10000; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5);">
+  <div style="width: 400px; height: 400px; margin: 10% auto; background: white; padding: 20px; text-align: center; border-radius: 5px; position: relative;">
+      <button onclick="_closeModalInternal()" style="position: absolute; top: 10px; right: 10px; border: none; background: red; color: white; padding: 5px 10px; cursor: pointer;">X</button>
+      <h3>Oturumunuz bitmek üzere!</h3>
+      <iframe id="loginIframe" width="100%" height="300px" style="border: none; display: none;"></iframe>
+  </div>
+</div>
+<script>
+(() => {
+  // === KAPSÜLLÜ MODÜL — tek global: window.SessionGuard ===
+  const SG = {
+    cfg: {
+      pingUrl: 'session.asp',
+      loginUrl: 'index.asp?iframe=open&redirect=0',
+      pingMs: 30000,             // 30sn
+      countdownTickMs: 1000,     // 1sn
+      sessionDurationMin: 120,   // ASP'den de alabiliriz
+      modalId: 'sessionModal',
+      iframeId: 'loginIframe',
+      countdownElId: 'countdownTimer',
+    },
+    _state: {
+      sessionTimeLeft: 0,
+      lastTick: Date.now(),
+      modalOpened: false,
+      pollId: null,
+      countdownId: null,
+      inited: false,
+    },
+
+    init(userCfg = {}) {
+      if (this._state.inited) return;
+      this._state.inited = true;
+
+      // Kullanıcı config’i uygula
+      Object.assign(this.cfg, userCfg);
+
+      // Başlangıç süre
+      this._state.sessionTimeLeft = (this.cfg.sessionDurationMin || 120) * 60;
+
+      // Kapat butonu varsa içerden dinleyici ekle (global closeModal tanımlamıyoruz)
+      const modal = document.getElementById(this.cfg.modalId);
+      if (modal) {
+        const btn = modal.querySelector('[data-sg-close], button[onclick="closeModal()"]');
+        if (btn) {
+          btn.addEventListener('click', () => this._closeModalInternal());
+        }
+      }
+
+      // Sayaç + polling
+      window.addEventListener('load', () => {
+        this._startCountdown();
+        if (!document.hidden) this._startPolling();
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          this._stopPolling();
+        } else if (!this._state.modalOpened) {
+          // sekme geri geldiğinde hemen kontrol
+          this._pingSession();
+          this._startPolling();
+          this._state.lastTick = Date.now();
+        }
+      });
+    },
+
+    // Dışarıdan çağrılacak: giriş tamamlandıktan sonra
+    sessionRenewed() {
+      if (this._state.modalOpened) {
+        this._closeModalInternal();
+      }
+      this._resetTimerToFull();
+      if (!document.hidden) this._startPolling();
+    },
+
+    // UI yardımcıları
+    _getEl(id) { return document.getElementById(id); },
+    _updateCountdownUI() {
+      const el = this._getEl(this.cfg.countdownElId);
+      if (!el) return;
+      const mm = Math.max(0, Math.floor(this._state.sessionTimeLeft / 60));
+      const ss = Math.max(0, this._state.sessionTimeLeft % 60);
+      el.textContent = `${mm} dk ${ss} sn`;
+    },
+    _openModalOnce() {
+      if (this._state.modalOpened) return;
+      this._state.modalOpened = true;
+
+      const iframe = this._getEl(this.cfg.iframeId);
+      if (iframe) {
+        iframe.src = this.cfg.loginUrl;
+        iframe.style.display = 'block';
+      }
+      const modal = this._getEl(this.cfg.modalId);
+      if (modal) modal.style.display = 'block';
+
+      this._stopCountdown();
+      this._stopPolling();
+
+      // Event tetikle (istersen diğer scriptlerin dinlemesi için)
+      document.dispatchEvent(new CustomEvent('session:expired'));
+    },
+    _closeModalInternal() {
+      const modal = this._getEl(this.cfg.modalId);
+      if (modal) modal.style.display = 'none';
+      this._state.modalOpened = false;
+      this._resetTimerToFull();
+      this._startCountdown();
+      document.dispatchEvent(new CustomEvent('session:renewed'));
+    },
+    _resetTimerToFull() {
+      this._state.sessionTimeLeft = (this.cfg.sessionDurationMin || 120) * 60;
+      this._state.lastTick = Date.now();
+      this._updateCountdownUI();
+    },
+
+    // Sayaç
+    _tickCountdown() {
+      const now = Date.now();
+      const elapsed = Math.floor((now - this._state.lastTick) / 1000);
+      if (elapsed > 0) {
+        this._state.sessionTimeLeft = Math.max(0, this._state.sessionTimeLeft - elapsed);
+        this._state.lastTick = now;
+        this._updateCountdownUI();
+        if (this._state.sessionTimeLeft <= 0 && !this._state.modalOpened) {
+          this._pingSession(); // sunucu otoritesi ile karar ver
+        }
+      }
+    },
+    _startCountdown() {
+      if (this._state.countdownId) return;
+      this._state.lastTick = Date.now();
+      this._updateCountdownUI();
+      this._state.countdownId = setInterval(() => this._tickCountdown(), this.cfg.countdownTickMs);
+    },
+    _stopCountdown() {
+      if (this._state.countdownId) {
+        clearInterval(this._state.countdownId);
+        this._state.countdownId = null;
+      }
+    },
+
+    // Polling
+    _startPolling() {
+      if (this._state.pollId) return;
+      this._pingSession(); // hemen bir kez
+      this._state.pollId = setInterval(() => {
+        if (!document.hidden && !this._state.modalOpened) this._pingSession();
+      }, this.cfg.pingMs);
+    },
+    _stopPolling() {
+      if (this._state.pollId) {
+        clearInterval(this._state.pollId);
+        this._state.pollId = null;
+      }
+    },
+
+    // Sunucu yanıtını normalize et
+    _parseExpired(text) {
+      try {
+        const data = JSON.parse(text);
+        if (typeof data.expired === 'boolean') return data.expired;
+        if (typeof data.expired === 'string') return data.expired.toLowerCase() === 'true';
+      } catch (e) {
+        const t = (text || '').trim().toLowerCase();
+        if (t === 'true') return true;
+        if (t === 'false') return false;
+      }
+      return false;
+    },
+
+    async _pingSession() {
+      try {
+        const res = await fetch(this.cfg.pingUrl + '?_=' + Date.now(), {
+          method: 'GET',
+          cache: 'no-store',
+          headers: { 'Accept': 'application/json, text/plain; q=0.9' }
+        });
+        if (!res.ok) {
+          if (res.status === 401 || res.status === 440) this._openModalOnce();
+          return;
+        }
+        const text = await res.text();
+        const expired = this._parseExpired(text);
+        if (expired) {
+          this._openModalOnce();
+        } else {
+          // Sliding expiration: başarılı her ping’de süreyi full’e sar
+          this._resetTimerToFull();
+        }
+      } catch (e) {
+        // Ağ hatası → sessiz; bir sonraki ping denesin
+      }
+    }
+  };
+
+  // Dışa açılan tek global
+  window.SessionGuard = {
+    init: (cfg) => SG.init(cfg),
+    sessionRenewed: () => SG.sessionRenewed(),
+    // İstersen debug için şu ikisini de açabilirsin:
+    // openModal: () => SG._openModalOnce(),
+    // closeModal: () => SG._closeModalInternal(),
+  };
+})();
+</script>
+
+<script>
+/* ------ projen için başlat ------ */
+SessionGuard.init({
+  // ASP değeri varsa onu kullan (dakika). Yoksa default 120.
+  sessionDurationMin: parseInt("<%=sessionDuration%>", 10) || 120,
+  // endpoint’lerini özelleştir
+  pingUrl: 'session.asp',
+  loginUrl: 'index.asp?iframe=open&redirect=0',
+  // ID'ler senin HTML'ine uyuyor
+  modalId: 'sessionModal',
+  iframeId: 'loginIframe',
+  countdownElId: 'countdownTimer',
+  // süreler
+  pingMs: 30000,
+  countdownTickMs: 1000
+});
+
+// örnek: iframe içinden parent.SessionGuard.sessionRenewed() çağır
+
+window.addEventListener('message', (e) => {
+  // Güvenlik için origin kontrolü yap (ör: if (e.origin !== 'https://seninsite.com') return;)
+  if (e.data && e.data.type === 'SESSION_RENEWED') {
+    if (window.SessionGuard) window.SessionGuard.sessionRenewed();
+  }
+});
+</script>
+
+
+<script>
+(function(){
+  const CENTRAL = 'https://ai.cloudgrafike.com/aiassistant/src/quota_summary.php';
+
+  function sanitizeHost(h){
+    return (h||'').toLowerCase().replace(/^https?:\/\//,'').replace(/^www\./,'').replace(/\/.*$/,'');
+  }
+
+  async function fetchFromCentral(domain){
+    const r = await fetch(CENTRAL + '?domain=' + encodeURIComponent(domain), {method:'GET', credentials:'omit', cache:'no-store'});
+    if(!r.ok) throw new Error('central '+r.status);
+    return await r.json();
+  }
+  async function fetchFromProxy(domain){
+    const r = await fetch('/admin/opt/quota_status.php?domain=' + encodeURIComponent(domain), {method:'GET', credentials:'same-origin', cache:'no-store'});
+    if(!r.ok) throw new Error('proxy '+r.status);
+    return await r.json();
+  }
+  async function fetchQuota({domain, viaProxy}){
+    const d = sanitizeHost(domain || location.hostname);
+    if(viaProxy) return await fetchFromProxy(d);
+    try { return await fetchFromCentral(d); }
+    catch { return await fetchFromProxy(d); }
+  }
+
+  function mountQuotaBadge(target, data, opts){
+    const el = (typeof target==='string') ? document.querySelector(target) : target;
+    if(!el) return;
+    const h    = Number(opts?.height || 40);              // kırmızı sayaç yüksekliğine eşitle
+    const mode = data.mode || 'stopped';
+    const lim  = data.limits || {normal:10, lite:100};
+    const rem  = data.remaining || {normal:0, lite:0};
+    const used = data.used || {normal:0, lite:0, errors:0};
+    const modeLabel = mode==='normal' ? 'G' : mode==='lite' ? 'L' : 'K';
+
+    el.innerHTML = `
+      <div class="aiq-wrap">
+        <button type="button" class="aiq-badge" data-mode="${mode}" style="--aiq-h:${h}px" aria-haspopup="true" aria-expanded="false" title="Kota">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="kv">Gelişmiş <b>${rem.normal}</b><small> / ${lim.normal}</small></span>
+          <span class="kv">Lite <b>${rem.lite}</b><small> / ${lim.lite}</small></span>
+          <span class="kv">Mod <b>${modeLabel}</b></span>
+          <span class="toggle" aria-hidden="true" style=" width: auto; padding-top: inherit; "><span class=" fa fa-angle-down"></span></span>
+        </button>
+        <div class="aiq-dd" role="menu">
+          <div class="dd-row"><strong>Bu ay</strong></div>
+          <div class="dd-row">Gelişmiş kullanımı: <b>${used.normal}</b></div>
+          <div class="dd-row">Lite kullanımı: <b>${used.lite}</b></div>
+          <div class="dd-row">Hata: <b>${used.errors}</b></div>
+        </div>
+      </div>
+    `;
+
+    const wrap   = el.querySelector('.aiq-wrap');
+    const badge  = el.querySelector('.aiq-badge');
+    const panel  = el.querySelector('.aiq-dd');
+
+    function open(){ panel.classList.add('open'); badge.setAttribute('aria-expanded','true'); document.addEventListener('click', outside); }
+    function close(){ panel.classList.remove('open'); badge.setAttribute('aria-expanded','false'); document.removeEventListener('click', outside); }
+    function outside(ev){ if(!wrap.contains(ev.target)) close(); }
+
+    badge.addEventListener('click', (e)=>{ e.stopPropagation(); panel.classList.toggle('open'); 
+      if(panel.classList.contains('open')) open(); else close();
+    });
+  }
+
+  // Dışarıdan çağrı noktası
+  window.initQuotaWidget = async function initQuotaWidget(opts){
+    const target   = opts?.target || '#ai-quota-badge';
+    const domain   = opts?.domain || location.hostname;
+    const viaProxy = !!opts?.viaProxy;           // CORS sorunu varsa true yap
+    const height   = Number(opts?.height || 40); // kırmızı sayaç yüksekliği
+
+    try{
+      const data = await fetchQuota({domain, viaProxy});
+      mountQuotaBadge(target, data, {height});
+    }catch(e){
+      console.error('quota badge failed', e);
+      const el = document.querySelector(target);
+      if(el) el.innerHTML = '<div class="aiq-fallback">Kota bilgisi alınamadı</div>';
+    }
+  };
+
+  // Stiller
+  const css = `
+  .aiq-wrap{ position:relative; display:inline-block; }
+  .aiq-badge{
+    --aiq-h:40px;
+    display:inline-flex; align-items:center; gap:12px;
+    min-height:var(--aiq-h); line-height:var(--aiq-h);
+    padding:0 12px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer;
+    font:14px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial; white-space:nowrap;
+    box-shadow:0 1px 2px rgba(0,0,0,.04);
+  }
+  .aiq-badge .dot{width:8px;height:8px;border-radius:50%;background:#0aa;margin-right:2px}
+  .aiq-badge[data-mode="lite"] .dot{background:#2563eb}
+  .aiq-badge[data-mode="stopped"] .dot{background:#ef4444}
+  .aiq-badge .kv{display:flex; gap:6px; align-items:baseline}
+  .aiq-badge .kv b{font-weight:700}
+  .aiq-badge .kv small{color:#6b7280}
+  .aiq-badge .toggle{margin-left:4px;font-size:12px;color:#6b7280}
+  .aiq-dd{
+    position:absolute; right:0; top:calc(100% + 6px);
+    display:none; z-index:9999; min-width:260px; background:#fff; color:#111;
+    border:1px solid #e5e7eb; border-radius:10px; padding:10px; box-shadow:0 12px 24px rgba(0,0,0,.12);
+  }
+  .aiq-dd.open{ display:block; }
+  .aiq-dd .dd-row{ padding:6px 2px; border-bottom:1px dashed #eee; }
+  .aiq-dd .dd-row:last-child{ border-bottom:0; }
+  .aiq-fallback{ padding:6px 10px; border:1px solid #f5c2c7; background:#fff6f6; color:#b42318; border-radius:8px;}
+  `;
+  const style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
+
+})();
+</script>
+
+<script>
+// kırmızı sayaç 40–44px civarı; birebir eşitlemek için height parametresini oynat
+window.addEventListener('DOMContentLoaded', function(){
+  initQuotaWidget({
+    target: '#ai-quota-badge',
+    height: 44,          // kırmızı sayaç kaç px ise onu gir
+    viaProxy: true       // CORS sorununu kesin çözmek için true
+  });
+});
+</script>
+
+
+
+  </body>
+</html>
+
+<%    
+end if 
+    close(Con)
+    'close(Contur)
+    close(Con1)
+    end sub
+    
+    
+if domainhttps="off" then
+siteserver="http://"&Request.ServerVariables("Server_Name")
+else
+siteserver="https://"&Request.ServerVariables("Server_Name")
+end if
+
+if siteserver&"/"=sitedb or Request.ServerVariables("SCRIPT_NAME")="/admin/ortak_cssduzenle.asp"  then
+if siteserver&"/"=sitedb then
+reset="0"
+else
+reset="1"
+end if
+else
+reset="1"
+response.redirect("ortak_cssduzenle.asp?urunid=3&filtre=2")
+end if%>
+<!--#Include file="guven.asp"-->
+<!--#Include file="fnk_y.asp"-->
+<!--#Include file="fnk_y_ek.asp"-->
+<%if request.QueryString("islemexcel")="" then %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <META http-equiv=Copyright  content="Copyright   <%=year(date)%>&nbsp;&nbsp;http://www.rinn.web.tr/">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%=sitesahip%> Admin Paneli</title>
+
+    <!-- Bootstrap -->
+    <link href="<%=cloudpath%>admin/vendors/bootstrap.min.css" rel="stylesheet">      
+    <!-- Bootstrap Submenu -->
+    <link href="<%=cloudpath%>admin/vendors/bootstrap-submenu.css" rel="stylesheet">
+    <!-- Font Awesome
+    <link href="<%=cloudpath%>fontawesome/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="<%=cloudpath%>vendor/fontawesome-free/css/all.min.css"> -->
+    <link href="<%=cloudpath%>fontawesome/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=cloudpath%>admin/css/stylesort.css" />
+    <!-- NProgress -->
+    <link href="<%=cloudpath%>admin/vendors/nprogress.css" rel="stylesheet">
+    <!-- Dropzone.js -->
+    <link href="<%=cloudpath%>admin/vendors/dropzone.min.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="<%=cloudpath%>admin/vendors/_all.css" rel="stylesheet">
+    <!-- bootstrap-wysiwyg -->
+    <link href="<%=cloudpath%>admin/vendors/prettify.min.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="<%=cloudpath%>admin/vendors/select2.min.css" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="<%=cloudpath%>admin/vendors/switchery.min.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="<%=cloudpath%>admin/vendors/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="<%=cloudpath%>admin/vendors/jqvmap.min.css" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="<%=cloudpath%>admin/vendors/daterangepicker.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <!-- PNotify -->
+    <link href="<%=cloudpath%>admin/vendors/pnotify.css" rel="stylesheet">
+    <link href="<%=cloudpath%>admin/vendors/pnotify.buttons.css" rel="stylesheet">
+    <link href="<%=cloudpath%>admin/vendors/pnotify.nonblock.css" rel="stylesheet">
+      		<link href="<%=cloudpath%>admin/css/jquery.editable-select.min.css" rel="stylesheet" />      
+      		<link href="<%=cloudpath%>admin/css/selectize.default.css" rel="stylesheet" />
+      <link rel="stylesheet" href="<%=cloudpath%>admin/css/bootstrap-datetimepicker.min.css" />
+      <link href="<%=cloudpath%>admin/css/admin.min.css" rel="stylesheet">
+    <link href="<%=cloudpath%>admin/css/custom.min.css" rel="stylesheet">
+    
+                            <script>
+                               
+                                const aiRaw = <%= aits %>; 
+                                const ai = (typeof aiRaw === 'string') ? (aiRaw.toLowerCase() === 'true' || aiRaw === '1') : !!aiRaw;
+                                const aiLiteRaw = <%= ailite %>; 
+                                const aiLite = (typeof aiLiteRaw === 'string') ? (aiLiteRaw.toLowerCase() === 'true' || aiLiteRaw === '1') : !!aiLiteRaw;
+
+                            </script>
+  </head>
+  <body class="nav-md login">
+    <div class="container body">
+      <div class="main_container">
+          <%end if %>

@@ -1,0 +1,306 @@
+﻿<!--#Include file="../functions/dbbilgi.asp"-->
+<!--#Include file="../functions/function.asp"-->
+<!--#Include file="../functions/aspJSON1.17.asp"-->
+
+<%
+
+imgtempyol=".."&imgtemp
+dbyolurun="../images/siiroyku/"
+dbyolref="../images/referans/"
+dbupload="../images/haber/"
+dbuploadyazar="../images/yazar/"
+dbuploadyazi="../images/yazi/"
+dbuploadreklam="../images/reklam/"
+dbuploadbaslik="../images/baslik/"
+dbuploadgaleri=".."&imggaleriyol
+
+domaini=replace(Request.ServerVariables("Server_Name"),".","")
+    
+set mmmGenel = Con.Execute ("select * from diller1 where alt = '1' and sira1 = '1'")
+if mmmGenel.eof then
+aktifdil=240
+ceviridilek="tr"
+else
+aktifdil=mmmGenel("id")
+ceviridilek=mmmGenel("ceviricode")
+    if aktifdil=request.cookies("remember_admin_dil") then
+    else
+    response.cookies("remember_admin_dil")=""
+response.cookies("remember_admin_dil").Expires=date+10 
+response.cookies("remember_admin_dil")=aktifdil
+    end if
+end if
+close(mmmGenel)
+
+        
+set mmmGenel = Con.Execute ("select * from diller1 where id = '"&request.cookies("remember_admin_dil")&"'")
+if mmmGenel.eof then
+aktifdil=240
+ceviridil="tr-en"
+else
+ceviridileki=mmmGenel("ceviricode")
+ceviridil=ceviridilek&"-"&ceviridileki
+end if
+close(mmmGenel)
+    
+'silinmiyecekler="s835,s1013,s1011,s979,f91,f90,c155,c156,c157,c158,c159,c160,c161,c162,c163,c164,c165,c166,c167,c170,c172,c174,c175,c182,c183,c184,c90,s1080,s1053,s1055,s1076,s1048,s1105,s1121"
+%>
+<%
+ set mmmGenel = Con.Execute ("select * from tasarim where aktif = '1'")
+ menusiraadet=mmmGenel("d1")
+d2=mmmGenel("d2")
+d4=mmmGenel("d4")
+d6=mmmGenel("d6")
+d8=mmmGenel("d8")
+d42=mmmGenel("d42")
+d43=mmmGenel("d43")
+d19=mmmGenel("d19")
+d20=mmmGenel("d20")
+d21=mmmGenel("d21")
+d22=mmmGenel("d22")
+d23=mmmGenel("d23")
+d24=mmmGenel("d24")
+d54=mmmGenel("d54")
+d55=mmmGenel("d55")
+d57=mmmGenel("d57")
+temppath=mmmGenel("id")&"/"
+close(mmmGenel)
+%>
+<%
+Response.ContentType = "text/html" 
+Response.Charset = "UTF-8" 
+Response.Codepage = 65001 
+Response.Buffer=True
+%>
+<%sub footer(fcgoster)%>
+<%if fcgoster="1" then%>
+
+                  
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+             &copy; Copyright <%=year(date)%>  All Rights Reserved <a href="<%=webadmin%>" title="<%=webadmin%>" target="_blank"><%=webadmin%></a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+        <%else
+		end if%>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="<%=cloudpath%>admin/vendors/bootstrap.min.js"></script>
+      <script type="text/javascript" src="<%=cloudpath%>themes/default/js/jquery.uploadPreview.min.js"></script>
+<script type="text/javascript" src="<%=cloudpath%>admin/js/jquery-sortable1.js"></script> 
+    <!-- Bootstrap Submenu -->
+    <script src="<%=cloudpath%>admin/vendors/bootstrap-submenu.js"></script>
+    <!-- FastClick -->
+    <script src="<%=cloudpath%>admin/vendors/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="<%=cloudpath%>admin/vendors/nprogress.js"></script>
+    
+    <!-- Dropzone.js <script src="<'%=cloudpath%'>admin/vendors/dropzone.min.js"></script>-->
+    
+    <!-- Chart.js -->
+    <script src="<%=cloudpath%>admin/vendors/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="<%=cloudpath%>admin/vendors/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="<%=cloudpath%>admin/vendors/bootstrap-progressbar.min.js"></script>
+    
+    <!-- Skycons -->
+    <script src="<%=cloudpath%>admin/vendors/skycons.js"></script>
+    <!-- Flot -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.pie.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.time.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.stack.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.orderBars.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.flot.spline.min.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="<%=cloudpath%>admin/vendors/date.js"></script>
+    <!-- JQVMap -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.vmap.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/maps/jquery.vmap.world.js"></script>
+    <!-- easy-pie-chart -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.easypiechart.min.js"></script>
+    <!-- iCheck -->
+    <script src="<%=cloudpath%>admin/vendors/icheck.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="<%=cloudpath%>admin/vendors/moment.min.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/daterangepicker.js"></script>
+
+<!-- bootstrap-wysiwyg -->
+    <script src="<%=cloudpath%>admin/vendors/bootstrap-wysiwyg.min.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/jquery.hotkeys.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/prettify.js"></script>
+    <!-- jQuery Tags Input -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.tagsinput.js"></script>
+    <!-- Switchery -->
+    <script src="<%=cloudpath%>admin/vendors/switchery.min.js"></script>
+    <!-- Select2 -->
+    <script src="<%=cloudpath%>admin/vendors/select2.full.min.js"></script>
+    <!-- Parsley -->
+    <script src="<%=cloudpath%>admin/vendors/parsley.min.js"></script>
+    <!-- Autosize -->
+    <script src="<%=cloudpath%>admin/vendors/autosize.min.js"></script>
+    <!-- jQuery autocomplete -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.autocomplete.min.js"></script>
+    <!-- jquery.inputmask -->
+    <script src="<%=cloudpath%>admin/vendors/jquery.inputmask.bundle.min.js"></script>
+    <!-- starrr -->
+    <script src="<%=cloudpath%>admin/vendors/starrr.js"></script>
+        <script src="<%=cloudpath%>admin/vendors/pnotify.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/pnotify.buttons.js"></script>
+    <script src="<%=cloudpath%>admin/vendors/pnotify.nonblock.js"></script>
+<script type="text/javascript" src="<%=cloudpath%>admin/js/jquery.editable-select.js"></script>
+<script type="text/javascript" src="<%=cloudpath%>admin/js/selectize.min.js"></script>
+
+    <script type="text/javascript" src="<%=cloudpath%>admin/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="<%=cloudpath%>admin/js/bootstrap-datepicker.min.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="<%=cloudpath%>admin/js/custom.min.js"></script>
+    <!-- Modal with remote path -->
+			<div id="baslikmodal" class="modal fade" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Kapat"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel2">Yükleniyor</h4>
+                        </div>
+
+						<div class="modal-body with-padding">
+							
+						</div>
+
+						<div class="modal-footer">
+							<button class="btn btn-warning" data-dismiss="modal">Close</button>
+							<button class="btn btn-primary">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /modal with remote path -->
+            <script>
+ $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+      });
+</script>
+<%
+	if session("hatam1")="" then
+	else
+	if session("hatam1")="green" then
+	csses="success"
+	elseif session("hatam1")="red" then
+	csses="error"
+	elseif session("hatam1")="orange" then
+	csses="warning"
+	else
+	end if
+	%>
+<script type="text/javascript">
+$(document).ready(function() {
+new PNotify({
+                                  title: '<%=session("hata1")%>',
+                                  type: '<%=csses%>',
+                                  styling: 'bootstrap3'
+                              });
+							  });
+							   
+   </script>
+<%
+Response.Buffer = True
+if session("hatamm1")="2" then
+session("hatam1")=""
+	else
+	session("hatamm1")=1
+	session("hatamm1")=session("hatamm1")+1
+	'if instr(Request.ServerVariables("HTTP_REFERER"),"&islem=")=0 then
+	'referrer=Request.ServerVariables("HTTP_REFERER")
+	'else
+	'referrer=split(Request.ServerVariables("HTTP_REFERER"),"&islem=")(0)
+	'end if
+		'response.Write(referrer)
+	'response.Redirect referrer
+	end if
+end if
+ %>
+
+    <script type="text/javascript" src="tinymce/tinymce.min.js"></script>
+	<script type="text/javascript" src="tinymce/tiny_str.js"></script>	
+
+    
+
+
+  </body>
+</html>
+
+<%    
+    close(Con)
+    'close(Contur)
+    close(Con1)
+    end sub%>
+<!--#Include file="guven.asp"-->
+<!--#Include file="fnk_y.asp"-->
+<!--#Include file="fnk_y_ek.asp"-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <META http-equiv=Copyright  content="Copyright   <%=year(date)%>&nbsp;&nbsp;http://www.rinn.web.tr/">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%=sitesahip%> Admin Paneli</title>
+
+    <!-- Bootstrap -->
+    <link href="<%=cloudpath%>admin/vendors/bootstrap.min.css" rel="stylesheet">      
+    <!-- Bootstrap Submenu -->
+    <link href="<%=cloudpath%>admin/vendors/bootstrap-submenu.css" rel="stylesheet">
+    <!-- Font Awesome
+    <link href="<%=cloudpath%>fontawesome/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="<%=cloudpath%>vendor/fontawesome-free/css/all.min.css"> -->
+    <link href="<%=cloudpath%>fontawesome/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=cloudpath%>admin/css/stylesort.css" />
+    <!-- NProgress -->
+    <link href="<%=cloudpath%>admin/vendors/nprogress.css" rel="stylesheet">
+    <!-- Dropzone.js <link href="<'%=cloudpath%>admin/vendors/dropzone.min.css" rel="stylesheet">-->
+    
+    <!-- iCheck -->
+    <link href="<%=cloudpath%>admin/vendors/_all.css" rel="stylesheet">
+    <!-- bootstrap-wysiwyg -->
+    <link href="<%=cloudpath%>admin/vendors/prettify.min.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="<%=cloudpath%>admin/vendors/select2.min.css" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="<%=cloudpath%>admin/vendors/switchery.min.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="<%=cloudpath%>admin/vendors/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="<%=cloudpath%>admin/vendors/jqvmap.min.css" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="<%=cloudpath%>admin/vendors/daterangepicker.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <!-- PNotify -->
+    <link href="<%=cloudpath%>admin/vendors/pnotify.css" rel="stylesheet">
+    <link href="<%=cloudpath%>admin/vendors/pnotify.buttons.css" rel="stylesheet">
+    <link href="<%=cloudpath%>admin/vendors/pnotify.nonblock.css" rel="stylesheet">
+      		<link href="<%=cloudpath%>admin/css/jquery.editable-select.min.css" rel="stylesheet" />      
+      		<link href="<%=cloudpath%>admin/css/selectize.default.css" rel="stylesheet" />
+      <link rel="stylesheet" href="<%=cloudpath%>admin/css/bootstrap-datetimepicker.min.css" />
+      <link href="<%=cloudpath%>admin/css/admin.min.css" rel="stylesheet">
+    <link href="<%=cloudpath%>admin/css/custom.min.css" rel="stylesheet">
+  </head>
+  <body class="nav-md login">
+    <div class="container body">
+      <div class="main_container">

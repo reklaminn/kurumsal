@@ -1,0 +1,172 @@
+﻿
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&amp;subset=latin,latin-ext">
+<link rel="stylesheet" type="text/css" href="https://cdn2.cloudgrafike.com/template/serp/main.css">
+<style type="text/css">
+    .tools-single h1.title {
+        margin-top: 10px;
+        font-size: 42px;
+        font-weight: 400;
+        color: #fff;
+        font-family: Geometria-Bold;
+    }
+</style>
+<script src="https://cdn2.cloudgrafike.com/template/9.9/vendor/jquery/jquery.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+<script type="text/javascript" src="https://cdn2.cloudgrafike.com/template/serp/js/app.js"></script>
+<script type="text/javascript" src="https://cdn2.cloudgrafike.com/template/serp/js/MainController.js"></script>
+<script type="text/javascript" src="https://cdn2.cloudgrafike.com/template/serp/js/SerpPreview.js"></script>
+<div ng-app="ZEO">
+    <div ng-controller="MainController" class="page-tools-single">
+        <div class="site" ng-controller="SerpPreview">
+
+            <div class="serp-preview">
+                <div class="serp-preview__overlay">
+                    <div class="serp-preview__tool">
+                        <div class="row" style="margin:0px;">
+                            <div class="desktop">
+                                <div class="serp-preview__tool-header">
+                                    <div class="serp-preview__tool-header-logo">
+                                        <img src="https://cdn2.cloudgrafike.com/template/serp/img/img@google.png">
+                                    </div>
+                                    <div class="serp-preview__tool-header-search">
+                                        <p>Masaüstü Görünüm</p>
+                                        <div class="serp-preview__tool-header-search-s"></div>
+                                    </div>
+                                </div>
+                                <div class="serp-preview__tool-navigation">
+                                    <div class="line-1"></div>
+                                    <div class="line-2"></div>
+                                    <div class="line-2"></div>
+                                    <div class="line-2"></div>
+                                    <div class="line-3"></div>
+                                </div>
+                                <div class="serp-preview__tool-search-results">
+                                    <div class="container" style="width: 600px !important">
+                                        <div class="line-top"></div>
+                                        <div class="results">
+                                            <p class="title" id="serpTitle">{{ serp.title == '' ? 'İçeriğinizi açıklayan, tıklamaya teşvik edecek bir Title etiketi girin' : serp.title | lengthLimitTitle:countTitleWidth() }}</p>
+                                            <div class="richsnippet">
+                                                <div class="left-snippet" style="display: none">
+                                                    <img class="serp-thumb" src="https://cdn2.cloudgrafike.com/template/serp/img/img@serp-video.png">
+                                                </div>
+                                                <div class="standart">
+                                                    <p class="site">{{ serp.url == '' ? 'https://cdn2.cloudgrafike.com/template/' : serp.urlpath+''+serp.url }}</p>
+                                                    <div class="star" ng-show="ratingSnippet"></div>
+                                                    <p class="description" ng-show="ratingSnippet">Rating: 4 - 7 reviews - $49.99 - In stock</p>
+                                                    <p class="description" ng-show="serp.description.length > 0" data-ng-bind-html="serp.description | highlightKeywords:serp.keywords | dateFilter | lengthLimitDesc:countDescWidth() "></p>
+                                                    <p class="description" ng-show="serp.description.length <= 0"><span ng-show="dateSnippetShow">Dec 1, 2016 - </span>Sayfanızla alakalı bilgi veren bir meta description etiketi girin. Sıralama faktörü olmasa da kullanıcıların sayfanıza tıklamasında oldukça etkilidir.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line-1"></div>
+                                        <div class="line-2"></div>
+                                        <div class="line-3"></div>
+                                        <div class="line-4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mobile">
+                                <div class="serp-preview__tool-header">
+                                    <div class="serp-preview__tool-header-logo">
+                                        <img src="https://cdn2.cloudgrafike.com/template/serp/img/img@google.png">
+                                    </div>
+                                    <div class="serp-preview__tool-header-search">
+                                        <p>Mobil Görünüm</p>
+                                        <div class="serp-preview__tool-header-search-s"></div>
+                                    </div>
+                                </div>
+                                <div class="serp-preview__tool-navigation">
+                                    <div class="line-1"></div>
+                                    <div class="line-2"></div>
+                                    <div class="line-2"></div>
+                                    <div class="line-2"></div>
+                                </div>
+                                <div class="serp-preview__tool-search-results">
+                                    <div class="results">
+                                        <p class="title" id="serpTitle">{{ serp.title == '' ? 'İçeriğinizi açıklayan, tıklamaya teşvik edecek bir Title etiketi girin' : serp.title | charLimitTitle:countTitleChar() | charLimitH1:countH1Char() }}</p>
+                                        <p class="site">{{ serp.url == '' ? 'https://cdn2.cloudgrafike.com/template/' : serp.urlpath+''+serp.url }}</p>
+                                        <div class="star" ng-show="ratingSnippet"></div>
+                                        <p class="description" ng-show="ratingSnippet">Rating: 4 - 7 reviews - $49.99 - In stock</p>
+                                        <p class="description" ng-show="serp.description.length > 0" data-ng-bind-html="serp.description  | charLimitDesc:countDescChar() | highlightKeywords:serp.keywords"></p>
+                                        <p class="description" ng-show="serp.description.length <= 0"><span ng-show="dateSnippetShow">Dec 1, 2016 - </span>Sayfanızla alakalı bilgi veren bir meta description etiketi girin. Sıralama faktörü olmasa da kullanıcıların sayfanıza tıklamasında oldukça etkilidir.</p>
+                                    </div>
+                                    <div class="results-examples">
+                                        <div class="line-1"></div>
+                                        <div class="line-2"></div>
+                                        <div class="line-3"></div>
+                                        <div class="line-4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="serp-preview__tool-form">
+                            <div class="container">
+                                <div class="form-title">
+                                    <label for="h1" style="font-size: 19px">H1</label>
+                                    <div class="title-counter">                                        
+                                        <span class="h1-char-counter"><em class="icon-desktop"></em> <em class="icon-mobile"></em> {{ countH1Char() }}</span><span class="separator">/</span><span class="number">70</span> CHAR
+                                    </div>
+                                    <input id="h1" type="text" class="serpH1" ng-keyup="" ng-model="serp.h1" name="seoh1">
+                                </div>
+                                <div class="form-title">
+                                    <label for="title" style="font-size: 19px">Title</label>
+                                    <div class="title-counter">
+                                        <span class="title-px-counter"><em class="icon-desktop"></em> {{ countTitleWidth() }}</span><span class="separator">/</span><span class="number">600</span> PIXELS<br>
+                                        <span class="title-char-counter"><em class="icon-mobile"></em> {{ countTitleChar() }}</span><span class="separator">/</span><span class="number">78</span> CHAR
+                                    </div>
+                                    <input id="title" type="text" class="serpTitle" ng-keyup="" ng-change="limitTitleOverMax(countTitleWidth(),$event)" ng-model="serp.title" name="title">
+                                </div>
+                                <div class="form-description">
+                                    <label for="description">Meta Description</label>
+                                    <div class="description-counter">
+                                        <span class="desc-px-counter"><em class="icon-desktop"></em> {{ countDescWidth() }}</span><span class="separator">/</span><span class="number">1750</span> PIXEL<br>
+                                        <span class="desc-char-counter"><em class="icon-mobile"></em> {{ countDescChar() }}</span><span class="separator">/</span><span class="number">155</span> CHAR
+
+                                    </div>
+                                    <textarea id="description" ng-model="serp.description" ng-keyup="countDescWidth()" name="desc"></textarea>
+                                </div>
+                                <div class="row" style="padding: 0px 15px">
+                                    <div class="col">
+                                        <label for="url">URL</label>
+                                        <input id="url" type="text" class="small" ng-model="serp.url" name="seourl">
+                                    </div>
+                                    <div class="col">
+                                        <label for="keywords">Bold Yazılmış Kelimeler</label>
+                                        <input id="keywords" type="text" name="key" class="small" ng-model="serp.keywords" placeholder="(Virgülle ayırarak girilmeli)">
+                                    </div>
+                                </div>
+                                <div class="form-radio">
+                                    <input type="radio" name="view" id="serp-standart" ng-model="serpType" value="standart">
+                                    <label for="serp-standart">Standart Görünüm</label>
+                                    <input type="radio" name="view" id="serp-image" ng-checked="serpTypeChange()" ng-model="serpType" value="image">
+                                    <label for="serp-image">Görsel Rich Snippet</label>
+                                    <input type="radio" name="view" id="serp-video" ng-checked="serpTypeChange()" ng-model="serpType" value="video">
+                                    <label for="serp-video">Video Rich Snippet</label>
+                                </div>
+                                <div class="form-checkbox">
+                                    <input type="checkbox" name="show" id="serp-date" ng-model="dateSnippetShow">
+                                    <label for="serp-date">Tarih Ekleyin (Meta description'ın uzunluğunu etkilemektedir.)</label>
+                                    <input type="checkbox" name="show" id="serp-richsnippet" ng-model="ratingSnippet">
+                                    <label for="serp-richsnippet">Rich Snippet (Puanlama, Ücret gibi)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- pixel counters -->
+                <span class="serp-preview__tool-counter" style="opacity:0;width:auto;height:auto;font-size:18px;" id="counterTitle" ng-bind="serp.title"></span><br>
+                <span class="serp-preview__tool-counter" style="opacity:0;width:auto;height:auto;font-size:13px;" id="counterDescription" ng-bind="serp.description"></span>
+                <!-- end pixel counters -->
+                <canvas id="descCanvas" width="0" height="0" style="border:1px solid #d3d3d3;">
+                    Note: The canvas tag is not supported in Internet Explorer 8 and earlier versions.
+                </canvas>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

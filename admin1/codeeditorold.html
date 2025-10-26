@@ -1,0 +1,1032 @@
+﻿<link rel="stylesheet" href="https://cdn.grafikeweb.com/codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="https://cdn.grafikeweb.com/codemirror/addon/dialog/dialog.css">
+<link rel="stylesheet" href="https://cdn.grafikeweb.com/codemirror/addon/search/matchesonscrollbar.css">
+<link rel="stylesheet" href="https://cdn.grafikeweb.com/codemirror/addon/hint/show-hint.css">
+<link rel="stylesheet" href="https://cdn.grafikeweb.com/codemirror/theme/blackboard.css">
+<link rel="stylesheet" href="https://cdn.grafikeweb.com/codemirror/addon/display/fullscreen.css">
+<script src="https://cdn.grafikeweb.com/codemirror/lib/codemirror.js"></script>
+<link rel="stylesheet" href="https://cdn.grafikeweb.com/codemirror/addon/fold/foldgutter.css" />
+<script src="https://cdn.grafikeweb.com/codemirror/lib/codemirror.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/lib/formatting.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/selection/active-line.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/edit/matchbrackets.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/fold/foldcode.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/fold/foldgutter.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/fold/brace-fold.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/fold/xml-fold.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/fold/indent-fold.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/fold/markdown-fold.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/fold/comment-fold.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/display/fullscreen.js"></script>
+
+<script src="https://cdn.grafikeweb.com/codemirror/addon/hint/show-hint.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/hint/xml-hint.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/hint/html-hint.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/mode/xml/xml.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/mode/javascript/javascript.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/mode/css/css.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+
+<script src="https://cdn.grafikeweb.com/codemirror/addon/dialog/dialog.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/search/searchcursor.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/search/search.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/scroll/annotatescrollbar.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/search/matchesonscrollbar.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/addon/search/jump-to-line.js"></script>
+<script src="https://cdn.grafikeweb.com/codemirror/lib/cssbeautify.js" charset="utf-8"></script>
+
+<style>
+  .cm-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+  .cm-toolbar .btn{display:inline-block;padding:6px 10px;border:1px solid #ddd;border-radius:6px;background:#f6f6f6;cursor:pointer;user-select:none;font:13px/1.2 system-ui,-apple-system,sans-serif}
+  .cm-toolbar .btn:hover{background:#eee}
+  .cm-shortcuts{font-size:12px;color:#666;margin-top:6px;padding-top:6px;display:flex;gap:10px;flex-wrap:wrap}
+  .cm-shortcuts span{white-space:nowrap}
+  .ai-controls{display:flex;gap:8px;align-items:center;margin:10px 0}
+  .ai-controls select,.ai-controls input[type="text"],.ai-controls button{font:13px/1.2 system-ui,-apple-system,sans-serif;padding:6px 10px;border:1px solid #ddd;border-radius:6px}
+  .ai-controls button{background:#2b7cff;color:#fff;border-color:#2b7cff;cursor:pointer}
+  .ai-controls button[disabled]{opacity:.6;cursor:not-allowed}
+  .CodeMirror{border:1px solid #ddd;border-radius:8px;min-height:220px;font-size:14px}
+  .cm-toolbar {
+  display:flex; gap:.4rem; align-items:center; flex-wrap:wrap;
+}
+.cm-toolbar .btn {
+  position:relative;
+  width:34px; height:34px;
+  display:inline-flex; align-items:center; justify-content:center;
+  border:1px solid rgba(0,0,0,.1);
+  background:#fff; border-radius:8px; cursor:pointer;
+  padding:0; line-height:1; font-size:16px;
+}
+.cm-toolbar .btn .fa-solid { font-size:16px; }   /* FA var ise */
+.cm-toolbar .sep { width:8px; height:1px; background:rgba(0,0,0,.15); margin:0 4px; }
+
+.cm-toolbar .btn[aria-label]::after{
+  content: attr(aria-label);
+  position:absolute; left:50%; top: -8px; transform:translate(-50%, -100%);
+  background:rgba(0,0,0,.85); color:#fff; font-size:12px; white-space:nowrap;
+  padding:6px 8px; border-radius:6px; opacity:0; pointer-events:none;
+  transition:opacity .15s ease;
+  box-shadow:0 3px 10px rgba(0,0,0,.25);
+  z-index:20;
+}
+.cm-toolbar .btn:hover::after,
+.cm-toolbar .btn:focus::after { opacity:1; }
+
+</style>
+<div class="options">
+    <input type="hidden" name="indent" id="fourspaces" value="fourspaces" onchange='format()'>
+    <input type="hidden" name="indent1" id="twospaces" value="twospaces" onchange='format()'>
+    <input type="hidden" name="indent1" id="tab" value="tab" onchange='format()'>
+    <input checked type="hidden" name="openbrace" id="openbrace-end-of-line" onchange='format()'>
+    <input type="hidden" name="openbrace1" id="openbrace-separate-line" onchange='format()'>
+    <input checked type="hidden" name="autosemicolon" id="autosemicolon" onchange='format()'>
+</div>
+<script>
+
+    var editor, viewer, formatId;
+   const viewers = {}; // her tab için global viewer havuzu
+
+function format(a, modee) {
+    'use strict';
+    const strbeauty = document.getElementById('beautified' + a);
+    const strcollopsid = '#heading' + a;
+    let raw = '';
+
+    // Daha önce oluşturulmuşsa yeniden oluşturma
+    if (viewers[a] && typeof viewers[a].getValue === 'function') {
+          setTimeout(() => {
+     viewers[a].refresh();
+}, 1000);
+       
+        return;
+    }
+
+    const viewer = CodeMirror.fromTextArea(strbeauty, {
+        mode: modee,
+        extraKeys: {
+            "Ctrl-Space": "autocomplete",
+            "Ctrl-Q": cm => cm.foldCode(cm.getCursor()),
+            "Alt-F": "findPersistent",
+            "F11": cm => cm.setOption("fullScreen", !cm.getOption("fullScreen")),
+            "Esc": cm => {
+                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+            }
+        },
+        lineNumbers: true,
+        lineWrapping: true,
+        searchMode: 'popup',
+        foldGutter: true,
+        theme: "blackboard",
+        autoCloseBrackets: true,
+        matchTags: { bothTags: true },
+        lint: true,
+        highlightSelectionMatches: { showToken: /\w/, annotateScrollbar: true },
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"]
+    });
+
+    viewer.setSize(null, 500);
+    CodeMirror.commands["selectAll"](viewer);
+
+    const range = {
+        from: viewer.getCursor(true),
+        to: viewer.getCursor(false)
+    };
+    viewer.autoFormatRange(range.from, range.to);
+    CodeMirror.commands["goLineUp"](viewer);
+
+    viewers[a] = viewer; // sakla
+
+    if (window.formatId) {
+        window.clearTimeout(window.formatId);
+    }
+
+    window.formatId = window.setTimeout(function () {
+        raw = viewer.getValue();
+        $(strcollopsid).attr('onclick', '');
+        setTimeout(() => {
+    viewer.refresh();
+}, 1000);
+        window.formatId = undefined;
+    }, 42);
+}
+
+
+// === Yardımcılar ===
+const TASK_LABELS = {
+  translate_text:    'Çeviri',
+  rewrite_html_seo:  'HTML SEO düzelt',
+  generate_blog:     'Blog Yaz',
+  analyze_seo_url:   'SEO Analiz (URL)'
+};
+
+function normalizeTasks(spec){
+  if (Array.isArray(spec)) return uniq(spec);
+  if (typeof spec === 'string'){
+    let s = spec.trim();
+    // ör: "[translate_text-rewrite_html_seo,generate_blog]"
+    s = s.replace(/[\[\]\s]/g,'');
+    let parts = [];
+    s.split(',').forEach(chunk=>{
+      chunk.split('-').forEach(t=>{ if(t) parts.push(t); });
+    });
+    return uniq(parts);
+  }
+  // default
+  return ['rewrite_html_seo','translate_text'];
+}
+function uniq(arr){
+  const out=[]; const seen=new Set();
+  for (const x of arr){ if(!seen.has(x)){ seen.add(x); out.push(x); } }
+  return out;
+}// FA ikon adı -> <i> veya emoji fallback
+function iconHTML(name){
+  // FA yüklenmiş mi kaba kontrol:
+  const hasFA = !!document.querySelector('link[href*="fontawesome"],link[href*="font-awesome"],link[href*="all.min.css"]');
+  if (hasFA) return `<i class="fa-solid fa-${name}"></i>`;
+  // Fallback emojiler
+  const map = {
+    'magnifying-glass':'🔎', 'arrows-rotate':'🔁', 'wand-magic-sparkles':'✨',
+    'up-right-and-down-left-from-center':'⤢', 'location-arrow':'📍',
+    'rotate-left':'↶', 'rotate-right':'↷', 'up-down':'↕︎',
+    'image':'🖼️', 'broom':'🧹'
+  };
+  return map[name] || '⬤';
+}
+// FA5 Free ikon üretici (gerekirse emoji fallback)
+function iconHTML(name, emojiFallback){
+  // name: FA5 ikon adı, örn: 'search', 'exchange-alt', 'magic' ...
+  return `<i class="fas fa-${name}"></i>` + (emojiFallback ? `<!-- ${emojiFallback} -->` : '');
+}
+
+function createToolbar(key){
+  const wrap = document.createElement('div');
+  wrap.className = 'cm-toolbar';
+  wrap.dataset.key = key;
+
+  const btns = [
+    // ---- mevcutlar (FA5 isimleri)
+    { type:'cmd',  cmd:'findPersistent', icon:'search',           tip:'Find (Ctrl+F)' },
+    { type:'cmd',  cmd:'replace',        icon:'exchange-alt',     tip:'Replace (Ctrl+Shift+F)' }, // yoksa 'random' kullanabilirsin
+    { type:'cmd',  cmd:'jumpToLine',     icon:'location-arrow',   tip:'Go to (Alt+G)' },
+    { type:'sep' },
+    { type:'cmd',  cmd:'undo',           icon:'undo',             tip:'Undo (Ctrl+Z)' },
+    { type:'cmd',  cmd:'redo',           icon:'redo',             tip:'Redo (Ctrl+Y)' },
+
+    { type:'sep' },
+
+    // ---- yükseklik + dosya yöneticisi
+    { type:'action', icon:'arrows-alt-v', tip:'2× Yükseklik', handler: cm => cmDoubleHeight(cm) },
+    { type:'action', icon:'arrow-from-bottom', Tip:'Yüksekliği varsayılan değere al', handler: cm => cmResetHeight(cm, 300) },
+    { type:'sep' },
+
+    { type:'action', icon:'image',        tip:'Resim/Dosya Ekle', handler: cm => openRFM(cm) },
+    { type:'action', icon:'crosshairs', tip:'Sabit Değer Ekle', handler: cm => beautifyCurrent(cm, {normalize:true}) },
+    { type:'action', icon:'lightbulb', tip:'Icon Ekle', handler: cm => beautifyCurrent(cm, {normalize:true}) },
+
+    { type:'sep' },
+    { type:'action', icon:'magic',       tip:'Autocomplete (Ctrl+Space)', handler: cm => cm.execCommand('autocomplete') },
+
+    // ---- Beautify / Format
+    // FA5'te 'broom' bazen yok; sorun olursa 'paint-brush' kullan.
+    { type:'action', icon:'broom', tip:'Beautify (Ctrl+Shift+B)', handler: cm => beautifyCurrent(cm, {normalize:true}) },
+    { type:'action', icon:'expand-arrows-alt', tip:'Fullscreen (F11)',    handler: cm => cm.setOption('fullScreen', !cm.getOption('fullScreen')) },
+  ];
+
+  btns.forEach(b=>{
+    if (b.type === 'sep') {
+      const s = document.createElement('span');
+      s.className = 'sep';
+      wrap.appendChild(s);
+      return;
+    }
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn';
+    if (b.tip) { btn.setAttribute('aria-label', b.tip); btn.title = b.tip; }
+    if (b.icon) btn.innerHTML = iconHTML(b.icon);
+    else if (b.html) btn.innerHTML = b.html;
+    else btn.textContent = b.label || '';
+
+    btn.onclick = () => {
+      const cm = viewers[key];
+      if (!cm) return;
+      cm.focus();
+      setTimeout(() => {
+        if (b.type === 'cmd' && b.cmd) cm.execCommand(b.cmd);
+        else if (b.type === 'action' && b.handler) b.handler(cm);
+      }, 0);
+    };
+    wrap.appendChild(btn);
+  });
+
+  return wrap;
+}
+
+
+
+
+function createShortcutsFooter(){
+  const foot=document.createElement('div'); foot.className='cm-shortcuts';
+  ['Alt+G Goto','Ctrl+Space Autocomplete','Ctrl+F Search','Ctrl+Shift+F Replace','Ctrl+Z Undo','Ctrl+Y Redo','F11 Fullscreen']
+    .forEach(t=>{ const s=document.createElement('span'); s.textContent=t; foot.appendChild(s); });
+  return foot;
+}
+
+async function callProxy(task, payload){
+  const res = await fetch('/aiassistant/src/assistant_task.php', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ task, ...payload })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'İşlem başarısız');
+  return (typeof data.result==='string') ? data.result : JSON.stringify(data.result);
+}
+
+// ---------- yükseklik yardımcıları ----------
+function cmGetHeight(cm){
+  const wrap = cm.getWrapperElement();
+  const h = wrap.style.height || getComputedStyle(wrap).height;
+  const n = parseInt(h, 10) || wrap.offsetHeight || 300;
+  return Math.max(120, n);
+}
+function cmSetHeight(cm, h){
+  cm.setSize(null, Math.max(120, Math.min(h, 3000)));
+  cm.refresh();
+}
+function cmHeightStep(cm, delta){ cmSetHeight(cm, cmGetHeight(cm) + delta); }
+function cmDoubleHeight(cm){ cmSetHeight(cm, cmGetHeight(cm) * 2); }
+function cmHalfHeight(cm){ cmSetHeight(cm, Math.round(cmGetHeight(cm) / 2)); }
+function cmResetHeight(cm, def=300){ cmSetHeight(cm, def); }
+
+// ---------- HTML normalize + beautify ----------
+function normalizeHtml(html){
+  try{
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.documentElement.outerHTML || html; // kapanmayan tag'ları toparlar
+  }catch(e){ return html; }
+}
+function naivePrettyHtmlold(html){
+  const voids = new Set(['area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr']);
+  let indent=0, out=[];
+  html.replace(/>\s*</g,'>\n<').split('\n').forEach(line=>{
+    let s=line.trim(); if(!s) return;
+    if(/^<\/\w/.test(s)) indent=Math.max(0,indent-1);
+    out.push('  '.repeat(indent)+s);
+    const open = s.match(/^<(\w+)/), close = /^<\/(\w+)/.test(s);
+    if(open && !close){
+      const tag=(open[1]||'').toLowerCase();
+      if(!s.endsWith('/>') && !voids.has(tag)) indent++;
+    }
+  });
+  return out.join('\n');
+}
+
+// --- yardımcılar ---
+function hasHtmlDocument(src){
+  return /<!doctype/i.test(src) || /<\s*html[\s>]/i.test(src) || /<\s*body[\s>]/i.test(src);
+}
+
+// Fragman için DOM normalize: sadece body.innerHTML döner (sarmalayıcı yok)
+function normalizeHtmlSmart(src, {fragment=true} = {}){
+  try{
+    if (!window.DOMParser) return src;
+    const p = new DOMParser();
+    if (fragment){
+      const doc = p.parseFromString(`<body>${src}</body>`, 'text/html');
+      return doc.body ? doc.body.innerHTML : src;
+    } else {
+      const doc = p.parseFromString(src, 'text/html');
+      // Tam doküman istendiğinde bile üretme — dokümanı olduğu gibi koru
+      return doc.documentElement ? doc.documentElement.outerHTML : src;
+    }
+  }catch(e){ console.warn('normalizeHtmlSmart err:', e); return src; }
+}
+
+// Bazı beautifier/normalize adımları yine de html/body sararsa, soyar
+function stripDocWrappers(src){
+  let s = src.replace(/^\s*<!doctype[^>]*>\s*/i, ''); // doctype'ı at
+  // Önce body içeriği varsa onu al
+  const mBody = s.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  if (mBody) return mBody[1];
+  // Body yoksa <html> ... </html> arasını al
+  const mHtml = s.match(/<html[^>]*>([\s\S]*?)<\/html>/i);
+  if (mHtml) {
+    // İçeride bir <head> varsa onu düşürmeye çalış
+    const inner = mHtml[1];
+    const mOnlyBody = inner.match(/<head[^>]*>[\s\S]*?<\/head>\s*([\s\S]*)$/i);
+    return (mOnlyBody ? mOnlyBody[1] : inner);
+  }
+  return s;
+}
+
+// Basit fallback pretty
+function naivePrettyHtml(s){
+  return s
+    .replace(/>\s+</g, '>\n<')
+    .split('\n').map(l => l.trimRight()).join('\n');
+}
+
+// --- GÜNCEL beautify ---
+function beautifyCurrent(cm, {normalize=true} = {}){
+  let txt = cm.getValue();
+  const mode = (cm.getOption('mode')||'').toLowerCase();
+  try{
+    if (mode.includes('json')){
+      txt = JSON.stringify(JSON.parse(txt), null, 2);
+    } else if (mode.includes('css')){
+      txt = window.css_beautify ? window.css_beautify(txt, {indent_size:2}) : txt;
+    } else if (mode.includes('html') || /xml/.test(mode)){
+      const isDoc = hasHtmlDocument(txt);
+      let s = txt;
+
+      // Fragman ise sarmalama YOK, sadece DOM normalize ile bozuk node’ları toparla
+      if (normalize) s = normalizeHtmlSmart(s, {fragment: !isDoc});
+
+      // Beautify
+      if (window.html_beautify){
+        s = window.html_beautify(s, {
+          indent_size: 2,
+          indent_inner_html: true,
+          wrap_line_length: 0,
+          preserve_newlines: true,
+          // istersen şunları da ekleyebilirsin:
+          // end_with_newline: true,
+          // extra_liners: [],
+          // unformatted: ['code','pre','em','strong'] 
+        });
+      } else {
+        s = naivePrettyHtml(s);
+      }
+
+      // Orijinal fragmansa, olası html/body sarmalayıcılarını soy
+      if (!isDoc) s = stripDocWrappers(s).trim();
+
+      txt = s;
+    } else if (mode.includes('javascript')){
+      txt = window.js_beautify ? window.js_beautify(txt, {indent_size:2}) : txt;
+    } else {
+      // Düz metin: sadece trailing space temizliği
+      txt = txt.split('\n').map(l=>l.replace(/\s+$/,'')).join('\n');
+    }
+
+    cm.operation(()=>{
+      cm.setValue(txt);
+      cm.execCommand('goDocStart');
+    });
+  }catch(e){
+    console.warn('Beautify hatası:', e);
+    alert('Beautify başarısız: ' + e.message);
+  }
+}
+
+// Kısayol istersen:
+function wireBeautifyKey(cm){
+  const extra = cm.getOption('extraKeys') || {};
+  extra['Ctrl-Shift-B'] = () => beautifyCurrent(cm, {normalize:true});
+  cm.setOption('extraKeys', extra);
+}
+
+
+
+// === ANA: format25 ===
+// key: sayfadaki textarea id'si "beautified{key}" olmalı (örn: beautified5)
+// mode: CodeMirror modu ('text/html' vs.)
+// ai: true/false — AI panelini göster
+// aiselect: görev listesi (['translate_text','rewrite_html_seo']) veya string "[translate_text-rewrite_html_seo,generate_blog]"
+// addiprompt: true/false — ek prompt inputu göstersin ve isteğe uygulasın
+function format25(key, mode, ai=true, aiselect=['rewrite_html_seo','translate_text'], addiprompt=true){
+  const ta = document.getElementById('beautified'+key);
+  if (!ta) return;
+
+  if (viewers[key]) { setTimeout(()=>viewers[key].refresh(),100); return viewers[key]; }
+
+  // CodeMirror
+  const cm = CodeMirror.fromTextArea(ta, {
+    mode: mode || 'text/html',
+    theme: 'blackboard',
+    lineNumbers: true,
+    lineWrapping: true,
+    foldGutter: true,
+    gutters: ["CodeMirror-linenumbers","CodeMirror-foldgutter"],
+    autoCloseBrackets: true,
+    matchTags: { bothTags:true },
+    highlightSelectionMatches: { showToken:/\w/, annotateScrollbar:true },
+    extraKeys: {
+    "Ctrl-F": "findPersistent",
+    "Ctrl-Shift-F": "replace",
+    "Alt-G": "jumpToLine",
+    "Ctrl-Space": "autocomplete",
+    "Ctrl-Q": cm => cm.foldCode(cm.getCursor()),
+    "F11": cm => cm.setOption("fullScreen", !cm.getOption("fullScreen")),
+    "Esc": cm => { if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false); },
+    "Ctrl-Z": "undo",
+    "Ctrl-Y": "redo",
+
+    // Yükseklik kontrolü
+    "Alt-H": cm => cmDoubleHeight(cm),      // 2x yap
+    "Shift-Alt-H": cm => cmHalfHeight(cm),  // 1/2 yap
+    "Alt-=": cm => cmHeightStep(cm, +200),  // +200px
+    "Alt--": cm => cmHeightStep(cm, -200),  // -200px
+    "Alt-0": cm => cmResetHeight(cm, 300),  // 300px'e dön
+
+    // Beautify / Format
+    "Ctrl-Shift-B": cm => beautifyCurrent(cm, {normalize:true}),
+    "Alt-Shift-F":  cm => beautifyCurrent(cm, {normalize:true}) // VSCode benzeri
+  }
+  });
+  cm.setSize('100%', 260);
+
+  const cmWrapper = cm.getWrapperElement();
+
+  // Toolbar üstte
+  cmWrapper.parentNode.insertBefore(createToolbar(key), cmWrapper);
+  // Kısayol şeridi altta
+  //cmWrapper.parentNode.insertBefore(createShortcutsFooter(), cmWrapper.nextSibling);
+
+  // AI paneli
+  if (ai){
+    const tasks = normalizeTasks(aiselect);
+    const panel = document.createElement('div');
+    panel.className='ai-controls';
+
+    // SELECT
+    const sel = document.createElement('select');
+    sel.id = 'ai_sel_'+key;
+    tasks.forEach(t=>{
+      const opt=document.createElement('option');
+      opt.value=t;
+      opt.textContent = TASK_LABELS[t] || t;
+      sel.appendChild(opt);
+    });
+    panel.appendChild(sel);
+
+    // Ek prompt (opsiyonel)
+    let extraInput = null;
+    if (addiprompt){
+      extraInput = document.createElement('input');
+      extraInput.type='text';
+      extraInput.placeholder='Ek prompt (örn: teknik İngilizceye çevir)';
+      extraInput.id='ai_extra_'+key;
+      extraInput.style.flex='1';
+      panel.appendChild(extraInput);
+    }
+
+    // Uygula butonu
+    const btn = document.createElement('button');
+    btn.type='button'; btn.textContent='Uygula';
+    btn.onclick = async ()=>{
+      try{
+        btn.disabled=true; btn.textContent='Çalışıyor…';
+        const task = sel.value || 'rewrite_html_seo';
+        let text = cm.getValue();
+
+        // Ek prompt’u metne öne ekleyelim ki server tarafında talimatlarla birlikte işlensin
+        // (assistant_task.php, payload’u "instr + prompt + text" şeklinde birleştiriyordu)
+        const extra = extraInput && extraInput.value.trim();
+        if (extra){
+          // metnin başına ek talimat ekleyip modelin dikkatini çekeriz
+          text = `\n\n[Ek talimat]: ${extra}\n\n` + text;
+        }
+
+        // Payload hazırlığı
+        let payload = {};
+        if (task === 'translate_text'){
+          payload = { text, source_lang:'en', target_lang:'tr' };
+        } else if (task === 'generate_blog'){
+          // editördeki içerik başlık kabul edilir
+          payload = { title: text };
+        } else if (task === 'analyze_seo_url'){
+          // editördeki içerik URL kabul edilir
+          payload = { url: text };
+        } else {
+          // rewrite_html_seo ve diğer HTML tabanlı işler
+          payload = { html: text };
+        }
+
+        const out = await callProxy(task, payload);
+        cm.setValue(out);
+      }catch(err){
+        alert(err.message || 'Hata');
+      }finally{
+        btn.disabled=false; btn.textContent='Uygula';
+        setTimeout(()=>cm.refresh(),100);
+      }
+    };
+    panel.appendChild(btn);
+
+    // Paneli kısayolların altına yerleştir
+    cmWrapper.parentNode.insertBefore(panel, cmWrapper.nextSibling.nextSibling);
+  }
+
+  // (opsiyonel) ilk auto-format
+  if (cm.autoFormatRange) {
+    CodeMirror.commands["selectAll"](cm);
+    cm.autoFormatRange(cm.getCursor(true), cm.getCursor(false));
+    CodeMirror.commands["goLineUp"](cm);
+  }
+
+  viewers[key]=cm;
+  setTimeout(()=>cm.refresh(),100);
+  return cm;
+}
+
+
+    // Proxy çağrısı (sunucunuzdaki PHP endpoint)
+    async function callProxy(task, payload) {
+      const res = await fetch('opt/proxy_assistant.php', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ task, ...payload })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'İşlem başarısız');
+      return typeof data.result === 'string' ? data.result : JSON.stringify(data.result);
+    }
+// ek prompt’u bul
+function getExtraPromptForKey(key, btn) {
+  // 1) id ile dene: <input id="ai_extra_5">
+  const byId = document.getElementById('ai_extra_' + key);
+  if (byId && byId.value != null) return byId.value.trim();
+
+  // 2) butonun yakınında .ai-extra sınıflı input varsa dene
+  const scope = btn?.closest('.editor-wrap') || document;
+  const byCls = scope.querySelector('.ai-extra');
+  if (byCls && byCls.value != null) return byCls.value.trim();
+
+  // 3) yoksa boş
+  return '';
+}
+
+// payload’ı göreve göre kur
+function buildPayload(task, text, extraPrompt) {
+  let payload;
+  switch (task) {
+    case 'translate_text':
+      payload = { text };
+      break;
+    case 'generate_blog':
+      // metni başlık olarak yorumlamak istersen:
+      payload = { title: text };
+      break;
+    case 'analyze_seo_url':
+      // metni URL olarak yorumlamak istersen:
+      payload = { url: text };
+      break;
+    default:
+      // rewrite_html_seo ve diğer HTML tabanlı işler
+      payload = { html: text };
+  }
+
+  // Ek prompt varsa payload’a ekle
+  if (extraPrompt) {
+    payload.addiprompt  = extraPrompt;   // senin istediğin alan
+    payload.instructions = extraPrompt;  // sunucuda instructions okuyorsan da çalışsın
+  }
+  return payload;
+}
+
+// Varsayım: viewers["5"] CodeMirror örneğin
+// callProxy zaten proxy_assistant.php'yi çağırıyor:
+// body: { task, ...payload } -> merkez akışına gider
+
+async function fetchHtml(url){
+  const res = await fetch('/admin/opt/fetch_html.php', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ url })
+  });
+  const data = await res.json();
+  if(!res.ok || !data.ok) throw new Error(data.error || 'Fetch failed');
+  return data;
+}
+
+// İsteğe bağlı: HTML’i biraz “sıkıştır”
+function squeezeHtmlForSeo(html){
+  // JSON-LD’leri koru
+  const keeps = [];
+  html = html.replace(/<script[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi,
+    m => { keeps.push(m); return `___LDJSON_${keeps.length-1}___`; });
+
+  // Normal script ve style’ları kaldır (analiz için gereksiz)
+  html = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
+  html = html.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '');
+
+  // HTML yorumlarını temizle (koşullu yorumları bırakmak istersen bunu değiştir)
+  html = html.replace(/<!--([\s\S]*?)-->/g, '');
+
+  // fazla boşlukları sadeleştir
+  html = html.replace(/\s{2,}/g, ' ');
+
+  // JSON-LD’leri geri koy
+  html = html.replace(/___LDJSON_(\d+)___/g, (_,i)=>keeps[+i]);
+
+  return html;
+}
+function cleanForAI(html){
+  // JSON-LD koru
+  const keep = [];
+  let i = 0;
+  html = html.replace(/<script[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi, m=>{
+    keep.push(m); return `___LDJSON_${i++}___`;
+  });
+  html = html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,'')
+    .replace(/<!--[\s\S]*?-->/g,'')
+    .replace(/<svg[\s\S]*?<\/svg>/gi,'')
+    .replace(/<(video|audio|canvas|iframe|noscript)\b[\s\S]*?<\/\1>/gi,'')
+    .replace(/\s{2,}/g,' ');
+  if (html.length > 250*1024) html = html.slice(0, 250*1024);
+  html = html.replace(/___LDJSON_(\d+)___/g, (_,k)=>keep[+k]||'');
+  return html;
+}
+// Hızlı (temiz HTML üret) — JSON değil
+document.getElementById('btn-analyze-fast-5').onclick = async ()=>{
+  const url = document.getElementById('crawl-url-5').value.trim();
+  const cm  = viewers["5"];
+  if(!cm){ alert('Editör yok'); return; }
+  const html = cm.getValue();
+  if(!html){ alert('Önce Crawl veya HTML yapıştırın'); return; }
+
+  const btn = document.getElementById('btn-analyze-fast-5');
+  try{
+    btn.disabled = true; btn.textContent = 'Temizleniyor…';
+    // clean_only: sadece temiz HTML dön; max_bytes opsiyoneldir
+    const clean = await callProxy('analyze_seo_url', { url, html, clean_only: 1, max_bytes: 350*1024 });
+    cm.setValue(clean);
+    setTimeout(()=>{ cm.refresh(); try{ beautifyCurrent(cm, {normalize:true}); }catch(_){} }, 30);
+  }catch(e){
+    alert('Temizleme hatası: ' + (e.message||e));
+  }finally{
+    btn.disabled = false; btn.textContent = 'Hızlı Temizle (HTML)';
+  }
+};
+
+// === Deep Analyze (AI) için yardımcılar ===
+let lastDeepRaw5  = '';   // ham AI cevabı (string)
+let lastDeepJson5 = null; // parse edilmiş nesne
+
+function stripCodeFences(s){
+  if (typeof s !== 'string') return s;
+  s = s.trim();
+  // ```json ... ``` veya ``` ... ``` bloklarını soy
+  if (s.startsWith('```')) {
+    s = s.replace(/^```[a-zA-Z]*\n?/,'').replace(/```$/,'').trim();
+  }
+  return s;
+}
+
+function safeParseJSON(maybeJson){
+  // bazen zaten obje olabilir
+  if (typeof maybeJson === 'object' && maybeJson !== null) return maybeJson;
+
+  let s = String(maybeJson || '').trim();
+  s = stripCodeFences(s);
+
+  // tek kat parse
+  try { return JSON.parse(s); } catch(_){}
+
+  // bazen JSON string içinde tekrar JSON string olur -> çift parse dene
+  try {
+    const once = JSON.parse(s);
+    if (typeof once === 'string') {
+      const twice = JSON.parse(stripCodeFences(once));
+      return twice;
+    }
+    return once;
+  } catch(e) {
+    throw new Error('AI çıktısı JSON parse edilemedi.');
+  }
+}
+
+function prettyMaybeJsonString(v){
+  // schema_jsonld gibi: string olabilir (içinde JSON), array/object de olabilir
+  if (typeof v === 'string') {
+    const t = stripCodeFences(v);
+    try { return JSON.stringify(JSON.parse(t), null, 2); }
+    catch { return t; } // parse edilemiyorsa olduğu gibi
+  }
+  try { return JSON.stringify(v, null, 2); }
+  catch { return String(v ?? ''); }
+}
+
+function fillAuditForm(j){
+  const titleField       = document.getElementById('titleField');
+  const metaDescField    = document.getElementById('metaDescField');
+  const issuesField      = document.getElementById('issuesField');
+  const suggestionsField = document.getElementById('suggestionsField');
+  const schemaField      = document.getElementById('schemaField');
+
+  if (titleField)       titleField.value       = j.title ?? '';
+  if (metaDescField)    metaDescField.value    = j.meta_description ?? '';
+
+  if (issuesField) {
+    const issues = Array.isArray(j.issues) ? j.issues.join('\n') : (j.issues || '');
+    issuesField.value = issues;
+  }
+
+  if (suggestionsField) {
+    const sugg = Array.isArray(j.suggestions) ? j.suggestions.join('\n') : (j.suggestions || '');
+    suggestionsField.value = sugg;
+  }
+
+  if (schemaField) {
+    schemaField.value = prettyMaybeJsonString(j.schema_jsonld ?? '[]');
+  }
+}
+
+// İstersen bir modalda göster; yoksa yeni sekmede aç
+function showDeepJson5(){
+  const pretty = JSON.stringify(lastDeepJson5 ?? {}, null, 2);
+  // Basitçe yeni sekmede açalım
+  const blob = new Blob([pretty], {type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  window.open(url, '_blank');
+  setTimeout(()=>URL.revokeObjectURL(url), 10000);
+}
+
+// === Deep Analyze butonu ===
+document.getElementById('btn-analyze-deep-5').onclick = async ()=>{
+  const url = document.getElementById('crawl-url-5').value.trim();
+  const cm  = viewers["5"];
+  if (!cm){ alert('Editör yok'); return; }
+
+  let html = cm.getValue();
+  if (!html){ alert('Önce Crawl veya HTML yapıştırın'); return; }
+
+  // İsteğe bağlı istemci-ön temizlik (sunucu zaten temizliyor)
+  try { if (typeof cleanForAI === 'function') html = cleanForAI(html); } catch(_){}
+
+  // Ek talimat girişi kullanıyorsan (opsiyonel)
+  // <input id="ai-addiprompt-5"> gibi bir alanın varsa al:
+  const apEl = document.getElementById('ai-addiprompt-5');
+  const addiprompt = apEl && apEl.value.trim() ? apEl.value.trim() : undefined;
+
+  const btn = document.getElementById('btn-analyze-deep-5');
+  try{
+    btn.disabled = true;
+    btn.textContent = 'Derin analiz (AI)…';
+
+    const payload = { url, html };
+    if (addiprompt) payload.addiprompt = addiprompt;
+
+    // callProxy(task, body) → result:string bekliyoruz
+    const out = await callProxy('analyze_seo_url', payload);
+
+    lastDeepRaw5  = typeof out === 'string' ? out : JSON.stringify(out);
+    lastDeepJson5 = safeParseJSON(out);
+
+    // forma bas
+    fillAuditForm(lastDeepJson5);
+
+    // JSON’u ayrıca görmek istersen “JSON’u Göster” butonuna bastığında açılacak
+    // burada editördeki HTML'i değiştirmiyoruz (önceki cm.setValue(out) kaldırıldı)
+
+  }catch(e){
+    alert('Derin analiz hatası: ' + (e.message||e));
+  }finally{
+    btn.disabled = false;
+    btn.textContent = 'Derin Analiz (AI)';
+  }
+};
+
+// === “JSON’u Göster” butonu ===
+document.getElementById('btn-analyze-json-5').onclick = ()=>{
+  if (!lastDeepJson5) { alert('Önce Derin Analiz çalıştırın.'); return; }
+  showDeepJson5();
+};
+
+
+document.getElementById('btn-crawl-5').onclick = async ()=>{
+  const url = document.getElementById('crawl-url-5').value.trim();
+  if(!url){ alert('URL girin'); return; }
+  try{
+    const { html } = await fetchHtml(url);
+    const cleaned = squeezeHtmlForSeo(html); // istersen kapat
+    const cm = viewers["5"];
+    if(!cm){ alert('Editor yok'); return; }
+    cm.setValue(cleaned);
+    setTimeout(()=>cm.refresh(), 50);
+  }catch(e){
+    alert('Crawl hata: ' + (e.message||e));
+  }
+};
+
+document.getElementById('btn-analyze-5').onclick = async ()=>{
+  const url = document.getElementById('crawl-url-5').value.trim();
+  const cm = viewers["5"];
+  if(!cm){ alert('Editor yok'); return; }
+  const html = cm.getValue();
+  if(!html){ alert('Önce Crawl ile HTML doldurun veya elle yapıştırın'); return; }
+
+  try{
+    const out = await callProxy('analyze_seo_url', { url, html });
+    // analyze JSON döndürür; istersen başka alana yaz
+    cm.setValue(out);
+    setTimeout(()=>cm.refresh(), 50);
+  }catch(e){
+    alert('Analyze hata: ' + (e.message||e));
+  }
+};
+
+// JSON’u ayrı pencerede/sekmede güzel göstermek istersen:
+document.getElementById('btn-analyze-json-5').onclick = async ()=>{
+    this.disabled = true;
+  try{
+    const cm = viewers["5"];
+    const raw = cm.getValue();
+    const obj = JSON.parse(raw);
+    const pretty = JSON.stringify(obj, null, 2);
+    // yeni bir tab’da aç
+    const w = window.open('', '_blank');
+    w.document.write('<pre style="white-space:pre-wrap">'+
+                     pretty.replace(/[&<>]/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;' }[s]))+
+                     '</pre>');
+    w.document.close();
+  }catch(e){
+    alert('Geçerli JSON yok');
+  }
+};
+
+
+// Tüm "Uygula" butonlarına tek handler (event delegation)
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('.run-btn');
+  if (!btn) return;
+
+  const key = btn.dataset.key;          // "1" ya da "2"
+  const cm  = viewers[key];
+  const sel = document.getElementById('sel' + key);
+
+  try {
+    if (!cm) {
+      // CM daha kurulmadıysa otomatik kur ve tekrar dene
+      format(key, 'text/html'); // veya format25(...) kullanıyorsan ona göre değiştir
+    }
+    const editor = viewers[key];
+    if (!editor) throw new Error('Editör bulunamadı');
+
+    const task = sel ? sel.value : 'rewrite_html_seo';
+    const text = editor.getValue();
+
+    // addiprompt’u al
+    const extra = getExtraPromptForKey(key, btn); // "" veya string
+
+    // payload hazırla
+    const payload = buildPayload(task, text, extra);
+
+    btn.disabled = true;
+    btn.textContent = 'Çalışıyor…';
+
+    const out = await callProxy(task, payload);
+
+    editor.setValue(out);
+  } catch (err) {
+    alert(err.message || 'Hata');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Uygula';
+    const cm = viewers[key];
+    if (cm) setTimeout(() => cm.refresh(), 100);
+  }
+});
+
+
+</script>
+<script>
+// --- Ayarlar (gerekirse kendine göre değiştir)
+window.FILEMANAGER_URL  = window.FILEMANAGER_URL  || '/admin/tinymce/filemanager/dialog.php'; // tam/relative
+window.FILEMANAGER_TYPE = window.FILEMANAGER_TYPE || 2; // 2: images, 1: files, 3: media
+// window.FILEMANAGER_AKEY = 'opsiyonel_anahtar'; // gerekiyorsa
+
+function openRFM(cm, opts = {}) {
+  ensureRfmModal();                      // modal + callback tek sefer kur
+  const fieldId = 'rfm_field_for_cm';
+  document.getElementById(fieldId).value = '';
+
+  const urlBase = opts.url  || window.FILEMANAGER_URL;
+  const type    = opts.type || window.FILEMANAGER_TYPE;
+
+  const qs = new URLSearchParams({
+    type: String(type),
+    field_id: fieldId
+  });
+  if (opts.subfolder) qs.set('fldr', opts.subfolder);
+  if (opts.akey || window.FILEMANAGER_AKEY) qs.set('akey', opts.akey || window.FILEMANAGER_AKEY);
+
+  document.getElementById('rfm_iframe').src = urlBase + (urlBase.includes('?') ? '&' : '?') + qs.toString();
+
+  // callback'te erişebilmek için editor'ü hatırla
+  window.__cm_for_rfm__ = cm;
+
+  // modalı aç
+  const mEl = document.getElementById('rfm_modal');
+  if (window.bootstrap && window.bootstrap.Modal) {
+    const m = bootstrap.Modal.getOrCreateInstance(mEl);
+    m.show();
+  } else if (window.$ && typeof $('#rfm_modal').modal === 'function') {
+    $('#rfm_modal').modal('show');
+  } else {
+    mEl.style.display = 'block';
+  }
+}
+
+// Modal + callback kurulumu
+function ensureRfmModal(){
+  if (document.getElementById('rfm_modal')) return;
+
+  const modal = document.createElement('div');
+  modal.id = 'rfm_modal';
+  modal.className = 'modal fade';
+  modal.innerHTML = `
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close">×</button>
+          <h4 class="modal-title">Dosya/Resim Seç</h4>
+        </div>
+        <div class="modal-body p-0" style="height:70vh">
+          <iframe id="rfm_iframe" src="about:blank" style="border:0;width:100%;height:100%"></iframe>
+          <input type="hidden" id="rfm_field_for_cm" value="">
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+
+  // Responsive Filemanager geri dönüşü (parent çağrılır)
+  window.responsive_filemanager_callback = function(field_id){
+    try {
+      const path = (document.getElementById(field_id)?.value || '').trim();
+      const cm   = window.__cm_for_rfm__;
+      if (cm && path) {
+        const doc  = cm.getDoc();
+        const mode = (cm.getOption('mode') || '').toString();
+
+        // HTML modundaysa <img> olarak, diğer modlarda düz yol olarak ekleyelim
+        let snippet = path;
+        if (/html|xml/i.test(mode)) {
+          const sel = (doc.getSelection() || '').trim();
+          const alt = sel || '';
+          //snippet = `<img src="${escapeAttr(path)}" alt="${escapeAttr(alt)}">`;
+          snippet = `${escapeAttr(path)}`;
+        }
+
+        doc.replaceSelection(snippet, 'around'); // imleç/selection noktasına koy
+        cm.focus();
+      }
+    } finally {
+      // modalı kapat
+      const mEl = document.getElementById('rfm_modal');
+      if (window.bootstrap && window.bootstrap.Modal) {
+        const m = bootstrap.Modal.getInstance(mEl);
+        if (m) m.hide();
+      } else if (window.$ && typeof $('#rfm_modal').modal === 'function') {
+        $('#rfm_modal').modal('hide');
+      } else {
+        mEl.style.display = 'none';
+      }
+    }
+  };
+}
+
+function escapeAttr(s){ return String(s||'').replace(/"/g,'&quot;'); }
+</script>
